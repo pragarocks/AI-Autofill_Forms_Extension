@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            width: 350px;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+        
+        .subtitle {
+            font-size: 12px;
+            color: #666;
+            margin: 5px 0 0 0;
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .status-text {
+            font-weight: 500;
+        }
+        
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle.active {
+            background: #4CAF50;
+        }
+        
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+        
+        .toggle.active::after {
+            transform: translateX(26px);
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background 0.3s;
+        }
+        
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #45a049;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .stats {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .stats h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+        
+        .shortcuts {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .shortcuts h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #1976d2;
+        }
+        
+        .shortcut-item {
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .footer {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+        
+        .status-dot.online {
+            background: #4CAF50;
+        }
+        
+        .status-dot.offline {
+            background: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🤖</div>
+        <h1 class="title">AI AutoFill Assistant</h1>
+        <p class="subtitle">Intelligent form filling with local documents</p>
+    </div>
+    
+    <div class="status">
+        <span class="status-text">AutoFill</span>
+        <div class="toggle" id="toggleAutoFill"></div>
+    </div>
+    
+    <div class="controls">
+        <button class="btn btn-primary" id="fillCurrentForm">Fill Current Form</button>
+        <button class="btn btn-secondary" id="openDashboard">Open Dashboard</button>
+        <button class="btn btn-secondary" id="uploadDocument">Upload Document</button>
+    </div>
+    
+    <div class="stats">
+        <h3>Session Stats</h3>
+        <div class="stat-item">
+            <span>Forms Filled:</span>
+            <span id="formsFilled">0</span>
+        </div>
+        <div class="stat-item">
+            <span>Fields Filled:</span>
+            <span id="fieldsFilled">0</span>
+        </div>
+        <div class="stat-item">
+            <span>Documents Loaded:</span>
+            <span id="documentsLoaded">0</span>
+        </div>
+    </div>
+    
+    <div class="shortcuts">
+        <h3>Keyboard Shortcuts</h3>
+        <div class="shortcut-item"><strong>Ctrl + Enter:</strong> Fill current form</div>
+        <div class="shortcut-item"><strong>Focus field:</strong> Show suggestion</div>
+    </div>
+    
+    <div class="server-status">
+        <div class="status-dot" id="serverStatusDot"></div>
+        <span id="serverStatusText">Checking server...</span>
+    </div>
+    
+    <div class="footer">
+        <a href="#" id="settingsLink">Settings</a> | 
+        <a href="#" id="helpLink">Help</a> | 
+        <a href="#" id="aboutLink">About</a>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html> 

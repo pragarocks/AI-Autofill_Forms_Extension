@@ -1,0 +1,53 @@
+{
+  "name": "ai-autofill",
+  "version": "1.0.0",
+  "description": "AI-powered browser extension for intelligent form auto-filling using Google Gemini and RAG",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "dev": "nodemon src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "npm install && echo \"✅ Setup complete!\" && echo \"📝 Next steps:\" && echo \"   1. Get your Google Gemini API key from: https://makersuite.google.com/app/apikey\" && echo \"   2. Edit start.bat (Windows) or start.sh (Unix/Linux) and replace YOUR_API_KEY_HERE\" && echo \"   3. Run the startup script to start the server\" && echo \"   4. Load the extension in Chrome\"",
+    "start:windows": "start.bat",
+    "start:unix": "./start.sh"
+  },
+  "keywords": [
+    "ai",
+    "autofill",
+    "browser-extension",
+    "rag",
+    "gemini",
+    "forms",
+    "chrome-extension"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.2.1",
+    "@anthropic-ai/sdk": "^0.9.1",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.6.0",
+    "node-nlp": "^4.27.0",
+    "lowdb": "^1.0.0",
+    "dotenv": "^16.3.1",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "your-repository-url"
+  },
+  "bugs": {
+    "url": "your-repository-url/issues"
+  },
+  "homepage": "your-repository-url#readme"
+} 

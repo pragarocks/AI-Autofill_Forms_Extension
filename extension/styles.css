@@ -1,0 +1,322 @@
+/* AI AutoFill Extension Styles */
+
+.ai-autofill-indicator {
+    position: absolute !important;
+    top: -25px !important;
+    right: 0 !important;
+    background: #4CAF50 !important;
+    color: white !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    z-index: 10000 !important;
+    cursor: pointer !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    animation: aiSlideIn 0.3s ease-out !important;
+}
+
+.ai-autofill-indicator:hover {
+    background: #45a049 !important;
+}
+
+.ai-quick-suggestion {
+    position: absolute !important;
+    background: white !important;
+    border: 2px solid #4CAF50 !important;
+    border-radius: 6px !important;
+    padding: 8px !important;
+    z-index: 10001 !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    max-width: 300px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    animation: aiSlideIn 0.3s ease-out !important;
+}
+
+.ai-suggestion-content {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.ai-suggestion-text {
+    flex: 1 !important;
+    font-weight: 500 !important;
+    color: #333 !important;
+}
+
+.ai-confidence {
+    background: #e8f5e8 !important;
+    color: #2e7d32 !important;
+    padding: 2px 6px !important;
+    border-radius: 12px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+}
+
+.ai-apply-btn {
+    background: #4CAF50 !important;
+    color: white !important;
+    border: none !important;
+    padding: 4px 8px !important;
+    border-radius: 3px !important;
+    font-size: 11px !important;
+    cursor: pointer !important;
+    font-weight: 500 !important;
+}
+
+.ai-apply-btn:hover {
+    background: #45a049 !important;
+}
+
+.ai-close-btn {
+    background: #f44336 !important;
+    color: white !important;
+    border: none !important;
+    padding: 2px 6px !important;
+    border-radius: 3px !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+}
+
+.ai-close-btn:hover {
+    background: #d32f2f !important;
+}
+
+.ai-loading-indicator {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    background: #2196F3 !important;
+    color: white !important;
+    padding: 12px 20px !important;
+    border-radius: 6px !important;
+    z-index: 10002 !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    animation: aiSlideInRight 0.3s ease-out !important;
+}
+
+.ai-success-message {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    background: #4CAF50 !important;
+    color: white !important;
+    padding: 12px 20px !important;
+    border-radius: 6px !important;
+    z-index: 10002 !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    animation: aiSlideInRight 0.3s ease-out !important;
+}
+
+.ai-error-message {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    background: #f44336 !important;
+    color: white !important;
+    padding: 12px 20px !important;
+    border-radius: 6px !important;
+    z-index: 10002 !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    animation: aiSlideInRight 0.3s ease-out !important;
+}
+
+/* Form field highlighting for AI AutoFill */
+input[data-ai-indicator="true"],
+textarea[data-ai-indicator="true"],
+select[data-ai-indicator="true"] {
+    transition: box-shadow 0.3s ease !important;
+}
+
+input[data-ai-indicator="true"]:focus,
+textarea[data-ai-indicator="true"]:focus,
+select[data-ai-indicator="true"]:focus {
+    box-shadow: 0 0 4px #4CAF50 !important;
+}
+
+/* Animations */
+@keyframes aiSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes aiSlideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Pulse animation for form indicators */
+.ai-autofill-indicator {
+    animation: aiSlideIn 0.3s ease-out, aiPulse 2s infinite 1s !important;
+}
+
+@keyframes aiPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Improved field highlighting when filled */
+.ai-field-filled {
+    background-color: #e8f5e8 !important;
+    border-color: #4CAF50 !important;
+    transition: background-color 2s ease, border-color 2s ease !important;
+}
+
+/* Tooltip styles */
+.ai-tooltip {
+    position: absolute !important;
+    background: #333 !important;
+    color: white !important;
+    padding: 6px 10px !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    z-index: 10000 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+.ai-tooltip.show {
+    opacity: 1 !important;
+}
+
+.ai-tooltip::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 50% !important;
+    margin-left: -5px !important;
+    border-width: 5px !important;
+    border-style: solid !important;
+    border-color: #333 transparent transparent transparent !important;
+}
+
+/* Form detection indicator */
+.ai-form-detected {
+    position: relative !important;
+}
+
+.ai-form-detected::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: -2px !important;
+    right: -2px !important;
+    bottom: -2px !important;
+    background: linear-gradient(45deg, #4CAF50, #45a049) !important;
+    border-radius: 4px !important;
+    z-index: -1 !important;
+    opacity: 0.1 !important;
+    pointer-events: none !important;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .ai-quick-suggestion {
+        max-width: 280px !important;
+        font-size: 13px !important;
+    }
+    
+    .ai-loading-indicator,
+    .ai-success-message,
+    .ai-error-message {
+        right: 10px !important;
+        left: 10px !important;
+        font-size: 13px !important;
+        padding: 10px 15px !important;
+    }
+    
+    .ai-autofill-indicator {
+        font-size: 11px !important;
+        padding: 3px 6px !important;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .ai-quick-suggestion {
+        background: #2d2d2d !important;
+        border-color: #4CAF50 !important;
+        color: white !important;
+    }
+    
+    .ai-suggestion-text {
+        color: white !important;
+    }
+    
+    .ai-confidence {
+        background: #1b5e20 !important;
+        color: #a5d6a7 !important;
+    }
+    
+    .ai-tooltip {
+        background: #555 !important;
+    }
+    
+    .ai-tooltip::after {
+        border-color: #555 transparent transparent transparent !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .ai-autofill-indicator {
+        border: 2px solid white !important;
+    }
+    
+    .ai-quick-suggestion {
+        border-width: 3px !important;
+    }
+    
+    .ai-apply-btn,
+    .ai-close-btn {
+        border: 2px solid white !important;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .ai-autofill-indicator,
+    .ai-quick-suggestion,
+    .ai-loading-indicator,
+    .ai-success-message,
+    .ai-error-message {
+        animation: none !important;
+    }
+    
+    input[data-ai-indicator="true"],
+    textarea[data-ai-indicator="true"],
+    select[data-ai-indicator="true"] {
+        transition: none !important;
+    }
+    
+    .ai-field-filled {
+        transition: none !important;
+    }
+} 

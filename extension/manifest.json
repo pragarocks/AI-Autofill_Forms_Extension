@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "AI AutoFill Assistant",
+  "version": "1.0.0",
+  "description": "Intelligent form auto-fill using local documents and AI",
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "background"
+  ],
+  
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "<all_urls>"
+  ],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AI AutoFill Assistant"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["injected.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+} 

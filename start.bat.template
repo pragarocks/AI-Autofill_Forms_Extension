@@ -1,0 +1,36 @@
+@echo off
+echo ========================================
+echo    AI AutoFill Browser Extension
+echo ========================================
+echo.
+
+REM ========================================
+REM CONFIGURATION - EDIT YOUR API KEY HERE
+REM ========================================
+REM Replace "YOUR_API_KEY_HERE" with your actual Google Gemini API key
+REM Get your API key from: https://makersuite.google.com/app/apikey
+set GOOGLE_API_KEY=YOUR_API_KEY_HERE
+
+REM ========================================
+REM ADVANCED CONFIGURATION (Optional)
+REM ========================================
+REM Set to "false" to disable local LLM (recommended for most users)
+set LOCAL_LLM_ENABLED=false
+
+echo Starting AI AutoFill server...
+echo.
+echo Configuration:
+echo - Google API Key: %GOOGLE_API_KEY%
+echo - Local LLM Enabled: %LOCAL_LLM_ENABLED%
+echo.
+echo Server will be available at: http://localhost:3000
+echo Extension files at: http://localhost:3000/extension
+echo Test form at: http://localhost:3000/test-form
+echo.
+echo Press Ctrl+C to stop the server
+echo.
+
+REM Start the server
+node src/main.js
+
+pause 
