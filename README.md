@@ -98,6 +98,42 @@ ai-autofill/
 2. **Visit the test form**: http://localhost:3000/test-form
 3. **Try the extension** on any website with forms
 
+## 🤖 Local LLM Support
+
+Multiple options for privacy and offline usage:
+
+### **Option 1: Built-in Python Models (No cmake required)**
+1. Install Python dependencies: `python setup_local_llm.py`
+2. Enable in startup script: `LOCAL_LLM_ENABLED=true`
+3. Choose model: `LOCAL_LLM_MODEL=microsoft/DialoGPT-medium`
+
+### **Option 2: External LLM Servers (Recommended for powerful systems)**
+- **LM Studio**: Easy GUI, supports many models
+- **llama.cpp server**: High performance, command line
+- **Ollama**: Docker-based model management
+- **Text Generation WebUI**: Web interface with many features
+
+Configure in startup script:
+```bash
+# LM Studio
+LM_STUDIO_URL=http://localhost:1234/v1
+
+# llama.cpp server  
+LLAMACPP_URL=http://localhost:8080
+
+# Remote powerful system
+LM_STUDIO_URL=http://192.168.1.100:1234/v1
+```
+
+### **Deployment Options**
+- **Same system**: Everything on one machine
+- **External LLM**: Development system + powerful LLM server
+- **Git deployment**: Easy setup on multiple systems
+
+📚 **See detailed guides:**
+- `LOCAL_LLM_GUIDE.md` - Complete local LLM setup
+- `DEPLOYMENT_GUIDE.md` - Multi-system deployment
+
 ## 🔍 Troubleshooting
 
 ### Common Issues

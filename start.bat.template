@@ -14,8 +14,34 @@ set GOOGLE_API_KEY=YOUR_API_KEY_HERE
 REM ========================================
 REM ADVANCED CONFIGURATION (Optional)
 REM ========================================
-REM Set to "false" to disable local LLM (recommended for most users)
-set LOCAL_LLM_ENABLED=false
+REM Set to "true" to enable local LLM (Hugging Face Transformers - NO cmake required!)
+set LOCAL_LLM_ENABLED=true
+
+REM Optional: Set local LLM model (will auto-download on first use)
+REM Options: distilgpt2 (~300MB), gpt2-medium (~1.4GB), microsoft/DialoGPT-medium (~1.5GB)
+set LOCAL_LLM_MODEL=microsoft/DialoGPT-medium
+
+REM To setup local LLM dependencies, run: python setup_local_llm.py
+
+REM ========================================
+REM EXTERNAL LLM CONFIGURATION (For powerful systems)
+REM ========================================
+REM Uncomment and configure for external LLM servers:
+
+REM LM Studio (recommended for external systems)
+REM set LM_STUDIO_URL=http://localhost:1234/v1
+
+REM llama.cpp server
+REM set LLAMACPP_URL=http://localhost:8080
+
+REM Ollama 
+REM set OLLAMA_URL=http://localhost:11434
+
+REM Text Generation WebUI (oobabooga)
+REM set TEXTGEN_URL=http://localhost:5000/v1
+
+REM Custom external LLM endpoint
+REM set CUSTOM_LLM_URL=http://your-server:port/v1
 
 echo Starting AI AutoFill server...
 echo.

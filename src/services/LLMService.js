@@ -3,6 +3,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const Anthropic = require('@anthropic-ai/sdk');
 const { spawn } = require('child_process');
 const path = require('path');
+const ExternalLLMService = require('./ExternalLLMService');
 
 const logger = require('../utils/logger');
 
@@ -11,6 +12,9 @@ class LLMService {
         this.providers = {};
         this.currentProvider = null;
         this.localLLMEnabled = process.env.LOCAL_LLM_ENABLED === 'true';
+        
+        // Initialize external LLM service for remote/external providers
+        this.externalLLMService = new ExternalLLMService();
         
         this.initializeProviders();
     }
@@ -51,19 +55,35 @@ class LLMService {
         }
     }
 
-    initializeLocalLLM() {
+    async initializeLocalLLM() {
         try {
-            // Initialize local GGUF model support
+            // Use Hugging Face Transformers for local LLM (Python-only, no cmake)
+            const pythonScript = path.join(__dirname, '../local_llm/transformers_llm.py');
+            
+            // Check if Python environment is ready
+            const testResult = await this.testPythonEnvironment();
+            if (!testResult.success) {
+                logger.warn('Local LLM not available:', testResult.error);
+                return false;
+            }
+            
             this.providers.local = {
-                type: 'simple',
-                modelPath: process.env.LOCAL_LLM_PATH || './models/gemma-3n-E2B-it-IQ4_XS.gguf',
-                pythonScript: path.join(__dirname, '../local_llm/simple_llm.py')
+                type: 'transformers',
+                pythonScript: pythonScript,
+                available: true,
+                models: {
+                    'small': 'distilgpt2',  // ~300MB
+                    'medium': 'gpt2-medium',  // ~1.4GB  
+                    'chat': 'microsoft/DialoGPT-medium'  // ~1.5GB (recommended)
+                },
+                defaultModel: process.env.LOCAL_LLM_MODEL || 'microsoft/DialoGPT-medium'
             };
             
-            if (!this.currentProvider) this.currentProvider = 'local';
-            logger.info('Local GGUF LLM provider initialized');
+            logger.info('Local Transformers LLM provider initialized');
+            return true;
         } catch (error) {
             logger.warn('Local LLM initialization failed:', error.message);
+            return false;
         }
     }
 
@@ -134,6 +154,20 @@ Suggested value:`;
     }
 
     async generateCompletion(prompt, options = {}) {
+        // Priority order: External LLM → Local LLM → Cloud APIs
+        
+        // 1. Try external LLM first (LM Studio, llama.cpp, etc.)
+        if (await this.externalLLMService.isAvailable()) {
+            try {
+                logger.info('Using external LLM provider');
+                const result = await this.externalLLMService.generateCompletion(prompt, options);
+                return result;
+            } catch (error) {
+                logger.warn('External LLM failed, falling back to other providers:', error.message);
+            }
+        }
+
+        // 2. Fallback to built-in providers
         if (!this.currentProvider) {
             throw new Error('No LLM provider available');
         }
@@ -215,34 +249,52 @@ Suggested value:`;
     async generateLocalCompletion(prompt, options = {}) {
         try {
             const maxTokens = options.maxTokens || 150;
-            const temperature = options.temperature || 0.3;
+            const temperature = options.temperature || 0.7;
             
             const provider = this.providers.local;
-            if (!provider || provider.type !== 'simple') {
-                throw new Error('Local simple provider not available');
+            if (!provider || provider.type !== 'transformers') {
+                throw new Error('Local transformers provider not available');
             }
 
-            // Call Python script for GGUF inference
+            // Get model from options or use default
+            const model = options.model || provider.defaultModel;
+            
+            // Call Python script for Transformers inference
             const result = await this.callPythonScript(provider.pythonScript, [
-                'generate',
                 prompt,
-                maxTokens.toString(),
-                temperature.toString()
+                '--model', model,
+                '--max-length', maxTokens.toString(),
+                '--temperature', temperature.toString()
             ]);
 
             if (result.error) {
                 throw new Error(result.error);
             }
 
-            if (result.success) {
+            if (result.text) {
                 return { text: result.text };
             } else {
-                throw new Error('Local LLM generation failed');
+                throw new Error('Local LLM generation failed - no text returned');
             }
 
         } catch (error) {
             logger.error('Local LLM completion error:', error);
             throw error;
+        }
+    }
+
+    async testPythonEnvironment() {
+        try {
+            // Test if Python is available and has required packages
+            const result = await this.callPythonScript('python', ['-c', 
+                'import torch, transformers; print(\'{"success": true, "torch_version": "\' + torch.__version__ + \'", "transformers_version": "\' + transformers.__version__ + \'"}\')'
+            ]);
+            return { success: true, ...result };
+        } catch (error) {
+            return { 
+                success: false, 
+                error: `Python environment test failed: ${error.message}. Please install: pip install torch transformers` 
+            };
         }
     }
 
